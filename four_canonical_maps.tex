@@ -1,0 +1,335 @@
+\documentclass[12pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{color, transparent} % for Inkscape import
+
+\title{Building new topological spaces through canonical maps}
+
+\author{Sean Raleigh}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Suppose we have some topological spaces lying around. How can we build new topological spaces using the old ones? There are four fundamental constructions: subspaces, disjoint unions, products, and quotients. Defining the topologies on each can be done in two ways. One way is through \textit{ad hoc} definitions. These definitions make some intuitive sense, but look very different from one construction to the next. The other way uses canonical maps. Canonical maps provide a single framework in which all constructions obey the same unifying principle.
+
+\section{Canonical maps}
+
+Functions are pretty arbitrary things. Each element of the domain gets mapped somewhere in the range. However, there are certain situations when there are \emph{canonical maps} available to us. We use the word canonical here to mean that there is only one reasonable choice of function to describe the connection between related sets.
+
+Suppose $A$ is a subset of $X$. Is there a natural choice of map, either from $A$ to $X$ or from $X$ to $A$? Yes, the inclusion map:
+\begin{align*}
+	i: A &\to X,	\\
+	   a &\mapsto a.
+\end{align*}
+This choice is canonical. We're not suggesting there is only one way to map $A$ to $X$. But there's only one obvious way that we can all agree on. Since $A$ is a subset of $X$, the easiest thing to do is to send points of $A$ to themselves.
+
+Note that there is no canonical map $X \to A$. The points that are already in $A$ can go to themselves, but then where do we send points from $X \setminus A$? There is no obvious choice here.
+
+Now consider the relationship between $X$, $Y$, and the disjoint union $X \amalg Y$. Again, it's inclusion:
+\begin{align*}
+	i_{X}: X &\to X \amalg Y,		\\
+    	   x &\mapsto x,				\\
+    i_{Y}: Y &\to X \amalg Y,		\\
+    	   y &\mapsto y.
+\end{align*}
+
+For Cartesian products, things work a little differently. On first glance, it seems that one might be able to define maps from $X \to X \times Y$ (and similarly from $Y \to X \times Y$) like we did for the disjoint union above. But where would you send a point $x \in X$ under such a map?
+\[
+	x \mapsto (x, ?)
+\]
+
+Instead, the canonical maps are the projection maps and they go the other way:
+\begin{align*}
+	p_{X}: X \times Y &\to X,		\\
+    		   (x, y) &\mapsto x,	\\
+	p_{Y}: X \times Y &\to Y,		\\
+    		   (x, y) &\mapsto y.
+\end{align*}
+
+Quotients are slightly trickier. Suppose $X$ is a set with an equivalence relation $\sim$. (Recall that an equivalence relation is a relation on $X$ that is reflexive, symmetric, and transitive.) The most important fact about equivalence relations is that they partition sets into equivalence classes. So for each $x \in X$, we have the equivalence class
+\[
+	[x] = \{ y \in X \mid x \sim y\}.
+\]
+Note that if $x \sim y$, then $[x] = [y]$ and if $x \nsim y$, then $[x] \cap [y] = \emptyset$.
+
+We define the \emph{quotient space} $X/\!\sim$ to be the set of equivalence classes of $X$ under the equivalence relation $\sim$. The canonical map here is the quotient map:
+\begin{align*}
+	q: X &\to X/\!\sim,	\\
+       x &\mapsto [x].
+\end{align*}
+
+\section{Making maps continuous}
+
+Suppose $(X, \mathcal{T}_{X})$ and $(Y, \mathcal{T}_{Y})$ are topological spaces. (In other words, $X$ and $Y$ are sets, and $\mathcal{T}_{X}$ and $\mathcal{T}_{Y}$ are subsets of the power sets $\mathcal{P}(X)$ and $\mathcal{P}(Y)$, respectively, obeying the axioms for a topological space.) Rather than identifying open sets via their inclusion in the topology---e.g., $U \in \mathcal{T}_{X}$---we will simply say, ``U is open in X'' and never mention the $\mathcal{T}$s again!
+
+We know that a map $f:X \to Y$ is continuous if for every open set $U$ in $Y$, the pre-image $f^{-1}(U)$ is open in $X$. Now consider two situations:
+
+\begin{enumerate}
+\item
+What if we have a topological space $Y$, but $X$ is just a set? Is it possible to put a topology on $X$ that will ensure that $f$ is continuous?
+\item
+What if the topology on $X$ is known, but $Y$ is just a set? How can we topologize $Y$ to make $f$ continuous?
+\end{enumerate}
+
+A trivial answer to the first scenario is just to put the discrete topology on $X$. The pre-image of \emph{any} set in $Y$ is forced to be open, and hence, $f$ is forced to be continuous. Of course, this is a terrible idea: the discrete topology is totally useless. Instead, we should try to find the smallest\footnote{I use the terms ``small'' and ``large'' to mean topologies that have fewer or more open sets, respectively. Some people use the terms ``weak'' and ``strong'' to mean the same thing, but I think those terms are not very intuitive. Slightly better are the terms ``coarse'' and ``fine'', but I still prefer ``small'' and ''large''.} topology on $X$ that makes $f$ continuous.
+
+\begin{figure}[H]
+\centering
+\includegraphics{open_set_super.jpg}
+\end{figure}
+
+In the second scenario, things are a little different. The most trivial thing to do to $Y$ is to put the indiscrete topology on it. Since the pre-image of the empty set is the empty set, and the pre-image of $Y$ is $X$, the function $f$ is trivially continuous. This is an equally terrible thing to do. Clearly we want the largest topology on $Y$ that will still keep $f$ continuous. (Make sure you understand why in one case we want the smallest topology and in the other case we want the largest topology.)
+
+In the next few sections, we will show that there are natural topologies on subspaces, disjoint unions, products, and quotients that respect the continuity of the canonical maps. In particular, when the unknown topology needs to be defined on the domain, we will ensure that we choose the smallest topology that makes its corresponding canonical map continuous; when the unknown topology needs to be defined on the codomain, we will build the largest possible topology that respects the continuity of its canonical map.
+
+\begin{figure}[H]
+\centering
+\includegraphics{respect_my_continuitah.jpg}
+\end{figure}
+\section{Subspaces}
+
+Consider the canonical map $i:A \to X$ and let $U$ be an open set in $X$. For continuity, we need $i^{-1}(U)$ to be open in $A$. But $i^{-1}(U)$ is just $A \cap U$. (See Figure~\ref{F:subset_topology}.) So at a minimum, we need all sets of the form $A \cap U$ to be open in $A$. But one can verify that all sets of the form $A \cap U$ satisfy the axioms for a topology. So this is the smallest number of open sets we need to make $i$ continuous.
+
+\begin{figure}[ht]
+\centering
+\input{subset_topology.pdf_tex}
+\caption{The orange region is an open set of $A$ in the subspace topology.}
+\label{F:subset_topology}
+\end{figure}
+
+\section{Disjoint unions}
+
+For disjoint unions, the canonical maps are
+\begin{align*}
+	i_{X}: X &\to X \amalg Y,		\\
+    	   x &\mapsto x,				\\
+    i_{Y}: Y &\to X \amalg Y,		\\
+    	   y &\mapsto y.
+\end{align*}
+
+Now it is the codomain on which we must define a topology, so the strategy is a little different. We must think about sets $U \subseteq X \amalg Y$ for which $i_{X}^{-1}(U)$ and $i_{Y}^{-1}(U)$ are open in $X$ and $Y$, respectively.
+
+Since these are still inclusion maps, this works much the same way as with subsets:
+\begin{align*}
+	i_{X}^{-1}(U) &= X \cap U,	\\
+    i_{Y}^{-1}(U) &= Y \cap U.
+\end{align*}
+But $X \cap U$ is just some subset of $X$; let's call it $U_{X}$. As long as $U_{X}$ is open in $X$, continuity of $i_{X}$ is guaranteed. The same argument goes for $Y$. Therefore, in order for a set to pull back to open sets $U_{X}$ in $X$ and $U_{Y}$ in $Y$, $U$ needs to be of the form $U = U_{X} \amalg U_{Y}$. (See Figure~\ref{F:disjoint_union}.)
+
+If we try to add any more open sets to $X \amalg Y$, we would have to include something not of the form $U_{X} \amalg U_{Y}$. But then, such a set would not restrict to open sets in both $X$ and $Y$. Therefore, this is the largest topology one can put on the disjoint union. Of course, one still needs to prove that it actually is a topology, but this is straightforward.
+
+\begin{figure}[ht]
+\centering
+\input{disjoint_union.pdf_tex}
+\caption{An open set of $X \amalg Y$ must be the union of $U_{X}$ and $U_{Y}$.}
+\label{F:disjoint_union}
+\end{figure}
+
+\section{Products}
+
+The canonical maps are
+\begin{align*}
+	p_{X}: X \times Y &\to X,		\\
+    		   (x, y) &\mapsto x,	\\
+	p_{X}: X \times Y &\to Y,		\\
+    		   (x, y) &\mapsto y.
+\end{align*}
+Start with an open set in $X$; call it $U_{X}$. The pre-image $p_{X}^{-1}(U_{X})$ is just $U \times Y$. Likewise, if $U_{Y}$ is open in $Y$, then $p_{Y}^{-1}(U_{Y}) = X \times U_{Y}$. (See Figure~\ref{F:product}.)
+
+Because we are defining a topology on the domain of the projection maps, we are interested in the smallest topology making those maps continuous. When we did this with the subset topology, the pre-images we found were enough; those sets already formed a topology. In this case, however, the sets of the form $U_{X} \times Y$ and $X \times U_{Y}$ do not satisfy the axioms. Just take the intersection of these to get the set $U_{X} \times U_{Y}$ (the green part in Figure~\ref{F:product}), which cannot be written as $p_{X}^{-1}(U)$ or $p_{Y}^{-1}(U)$ for any $U$.
+
+\begin{figure}[ht]
+\centering
+\input{product_topology.pdf_tex}
+\caption{$U_{X} \times Y$ and $X \times U_{Y}$ are subbasis elements. Their intersection $U_{X} \times U_{Y}$ is a basis element.}
+\label{F:product}
+\end{figure}
+
+So how many more open sets do we need before we get a topology? The collection of sets of the form $U_{X} \times Y$ and $X \times U_{Y}$ is called a \emph{subbasis} (sometimes called a subbase). To get from a subbasis to a topology, we need first to take all finite intersections of subbasis elements. This will give us all sets of the form $U_{X} \times U_{Y}$. This collection is now called a \emph{basis} (or base). Then, we have to include arbitrary unions of those basis elements.\footnote{One may wonder now if the collection is really a topology. What if we could get even more open sets by taking more finite intersections? And then wouldn't we need arbitrary unions of those? And then more finite intersections and more unions\dots? It is a relatively straightforward theorem that, in fact, we only need to take finite intersections and then arbitrary unions once.}
+
+Once we have taken finite intersections and then arbitrary unions (and it is necessary to do this to make sure we have an actual topology), then we don't need to add any more sets. So now we have the smallest number of open sets possible. It wasn't quite as easy to get there as it was with the subspace topology, but the process was the same: define open sets so that the canonical maps---in this case, the projection maps---are continuous.
+
+\section{Quotients}
+
+The canonical map for a quotient space (often called an identification space) is
+\begin{align*}
+	q: X &\to X/\!\sim,	\\
+       x &\mapsto [x].
+\end{align*}
+As with the disjoint union, the codomain is the space in need of a topology; therefore, we want to look for sets $U$ in $X/\!\sim$ for which $q^{-1}(U)$ is open in $X$. As before, we wish to find the largest number of such sets $U$.
+
+Unlike the previous three examples, there is not much more to say for this case. Because $X$ and $\sim$ could be just about anything, there is no more direct way to define the quotient topology at this level of generality. The sets $U$ with $q^{-1}(U)$ open form a topology on $X/\!\sim$ (exercise for the reader), so there's nothing more to say. Intuition about what this really means comes from looking at some illustrative examples.
+
+The first example is $X = \mathbb{R}$ (and its usual topology) with the relation $x \sim y$ iff $x - y$ is an integer. The set $\mathbb{R}/\!\sim$ is set equivalent to $[0,1)$. (Do you see why?) But what is the topology? Note that on the real line, 0.9999 is quite close to 1.0001. But $1.0001 \sim 0.0001$, and in $[0,1)$, 0.9999 and 0.0001 are quite far apart. In Figure~\ref{F:real_line_0_1}, you can see that $[0,1)$ cannot be the correct quotient space. There is an open set in $[0,1)$ whose pre-image is not open in $\mathbb{R}$.
+
+\begin{figure}[ht]
+\centering
+\input{real_line_0_1.pdf_tex}
+\caption{The yellow set is open in $[0,1)$, but its pre-image is not open in $\mathbb{R}$.}
+\label{F:real_line_0_1}
+\end{figure}
+
+So here's a slightly different way of looking at it. If we consider instead the unit interval $I = [0,1]$, it's almost the same thing as $\mathbb{R}/\!\sim$, but since $0 \sim 1$, these are really the same point of $\mathbb{R}/\!\sim$. What happens if you take the interval $I$ and ``glue'' the endpoints together? You get $S^{1}$, the circle. Figure~\ref{F:0_1_circle} illustrates this correct interpretation.
+
+\begin{figure}[ht]
+\centering
+\input{0_1_circle.pdf_tex}
+\caption{Indentifying the endpoints of $[0,1]$ gives the circle $S^{1}$. Notice now that open sets in $S^{1}$ pull back to open sets in $[0,1]$.}
+\label{F:0_1_circle}
+\end{figure}
+
+Of course, we could have obtained the same space by starting out with the space $I = [0,1]$ (the unit interval with the subspace topology) and the following equivalence relation:
+\[
+	x \sim
+    \begin{cases}
+    	x \quad \text{if } 0 < x < 1 \\
+        0 \quad \text{if } x = 0, 1
+    \end{cases}
+\]
+In this relation, most of the equivalance classes $[x]$ consist of just the single point $x$, and $[0] = [1] = \{0, 1\}$.
+
+The latter approach can be generalized. Suppose $X$ is a topological space with $A \subseteq X$. Let $a$ be a point in $A$ and define the following equivalence relation on $X$:
+\[
+	x \sim
+    \begin{cases}
+    	x \quad \text{if } x \in X \setminus A \\
+        a \quad \text{if } x \in A
+    \end{cases}
+\]
+The equivalence classes consist of all the points in $X \setminus A$ as single-element classes, and one class $[a]$ containing all of $A$. The quotient space $X/\!\sim$ looks like $X$ except with all the points in $A$ collapsed to a single point. The circle $S^{1}$, as defined above, is the special case where $X = I$ and $A = \{0, 1\}$.\footnote{Note that $S^{1}$ could also be topologized as a subspace of $\mathbb{R}^{2}$. It's instructive (and comforting!) to prove that $S^{1}$ as a quotient and $S^{1}$ as a subspace are, indeed, homeomorphic.}
+
+This quotient space construction is usually written as $X/A$. (Don't confuse this with $X \setminus A$!)
+
+Here's another interesting example. Take the unit disk
+\[
+	D^{2} = \{\mathbf{x} \in \mathbb{R}^{2} \mid | \mathbf{x} | \leq 1\}.
+\]
+The boundary of the disk is
+\[
+	\partial D^{2} = \{\mathbf{x} \in \mathbb{R}^{2} \mid | \mathbf{x} | = 1\}.
+\]
+Can you see that $\partial D^{2} = S^{1}$? Now, what is $D^{2}/\partial D^{2}$ (or written another way, $D^{2}/S^{1}$)? Imagine taking the boundary of a disk and collapsing it to a single point. Figure~\ref{F:D2_S2} shows the process. The result is the 2-sphere $S^{2}$:
+\[
+	D^{2}/\partial D^{2} = D^{2}/S^{1} \cong S^{2}.
+\]
+
+\begin{figure}[ht]
+\centering
+\input{D2_S2.pdf_tex}
+\caption{Collapsing the boundary of the disk $D^{2}$ to a point, creating $S^{2}$.}
+\label{F:D2_S2}
+\end{figure}
+
+Nothing in this construction depended on the dimension being two. What is $D^{1}/\partial D^{1}$? This can also be written as $D^{1}/S^{0}$. 
+
+What is $D^{1}$? By definition, it's
+\[
+	D^{1} = \{x \in \mathbb{R} \mid | x| \leq 1\}.
+\]
+In other words, it's just $[-1,1]$.
+
+What is $S^{0}$, the 0-sphere? Its definition is
+\[
+	S^{0} = \{ x \in \mathbb{R} \mid |x| = 1\}.
+\]
+This is just the set $\{-1, 1\}$. Putting it all together, $D^{1}/S^{0}$ is the interval $[-1, 1]$ with the points $-1$ and 1 glued together. It's the exact same construction we did earlier to get $S^{1}$ (except with a slightly larger interval, but it's topology, so who cares?). Therefore,
+\[
+	D^{1}/\partial D^{1} = D^{1}/S^{0} \cong S^{1}.
+\]
+In any dimension,
+\[
+	D^{n} = \{\mathbf{x} \in \mathbb{R}^{n} \mid | \mathbf{x} | \leq 1\},
+\]
+with boundary
+\[
+	\partial D^{n} = \{\mathbf{x} \in \mathbb{R}^{n} \mid | \mathbf{x} | = 1\},
+\]
+so that
+\[
+	D^{n}/\partial D^{n} = D^{n}/S^{n-1} \cong S^{n},
+\]
+but it's hard to picture what this looks like for $n \geq 3$. (For $n = 3$, you can picture the 3-ball $D^{3}$ sitting in $\mathbb{R}^{3}$, but then how would you gather up the boundary sphere and glue it all to a single point? The resulting 3-sphere $S^{3}$ lives naturally in four dimensions, which isn't so easy to imagine!)
+
+As another important example, start with $\mathbb{R}^{2}$ and impose the relation $(x_{1}, y_{1}) \sim (x_{2}, y_{2})$ iff both $x_{1} - x_{2}$ and $y_{1} - y_{2}$ are integers. The quotient $\mathbb{R}^{2}/\!\sim$ is set equivalent to the product $[0,1) \times [0,1)$. (Again, do you see why?) But the topology is not right.
+
+Instead, view this as the unit square $I^{2} = I \times I$ with the following relation:
+\[
+	(x,y) \sim
+    \begin{cases}
+    	(x, y), \quad 0 < x < 1 \text{ and }
+        	0 < y < 1 \\
+        (x, 0), \quad y = 0, 1 \\
+        (0, y), \quad x = 0, 1.
+    \end{cases}
+\]
+(At the four corners of the square there is no inconsistency in this definiton: $(0,0) \sim (0, 1) \sim (1, 0) \sim (1,1)$.) Intuitively this means we should glue the two sides of the square in pairs. Figure~\ref{F:torus} shows the result. It's the torus $T^{2}$. The torus is only one of many interesting surfaces that can be formed by taking some piece of the plane and gluing various edges together.
+
+If you want to have some fun, see if you can figure out why $T^{2} \cong S^{1} \times S^{1}$.
+
+\begin{figure}[ht]
+\centering
+\input{torus.pdf_tex}
+\caption{Gluing the edges of a square in pairs gives the torus $T^{2}$.}
+\label{F:torus}
+\end{figure}
+
+\section{and beyond\dots}
+
+Once you have the fundamental four constructions, you can do all sorts of other stuff. Without going into much detail, here's a list of interesting constructions:
+
+\begin{itemize}
+\item
+	The \emph{wedge sum} $X \vee Y$ is defined by choosing specific points $x \in X$ and $y \in Y$, and then gluing $X$ and $Y$ at a single point, fusing together points $x$ and $y$. In a further abuse of the quotient notation:
+\[
+    X \vee Y = \left(X \amalg Y\right) / (x \sim y)
+\]
+(meaning \emph{only} $x$ and $y$ are glued).
+\item
+	The \emph{smash product} $X \wedge Y$ is
+\[
+	X \wedge Y = \left(X \times Y\right) / \left( X \vee Y\right).
+\]
+It's much harder to give an intuitive description of the smash product.
+\item
+	The \emph{cylinder} on $X$ is just $X \times I$. This is a generalization of what you already know as a cylinder with $X = S^{1}$.
+\item
+	The \emph{cone} on $X$, often denoted $CX$, is formed by taking the cylinder on $X$ and then identifying all the points at one end:
+\[
+	CX = \left(X \times I\right) / \left(X \times \{0\}\right).
+\]
+Again, think about $X = S^{1}$ to recover the special case that you are used to calling a cone.
+\item
+	The \emph{suspension} of $X$, often denoted $SX$, is basically a double cone:
+\[
+	SX = \left(X \times I\right) / \sim
+\]
+where $\sim$ collapses all of $X \times \{0\}$ to a point, and all of $X \times \{1\}$ to a point.
+\item
+	The \emph{mapping cylinder} of a function $f:X \to Y$ is defined to be
+\[
+	M_{f} = \left(\left(X \times I\right) \amalg Y\right) / \left((x, 1) \sim f(x)\right).     
+\]
+Basically, this is the cylinder on $X$ with one end glued to $Y$ by fusing $x$ and $f(x)$.
+\item
+	The \emph{mapping cone} is similar:
+\[
+	C_{f} = M_{f} / \left(X \times \{0\}\right).
+\]
+In other words, it's just the mapping cylinder, except the end not attached to $Y$ is collapsed to a point.
+\item
+	The \emph{mapping torus} is very similar to the mapping cylinder in the special case when $f$ is a homeomorphism of $X$ to itself:
+\[
+	T_{f} = \left(X \times I\right) / \left( (x, 0) \sim (f(x), 1)\right).
+\]
+The idea here is that the cylinder has a copy of $X$ on both ends, so you glue the ends together, fusing $x$ and $f(x)$.
+\end{itemize}
+
+
+\end{document}
